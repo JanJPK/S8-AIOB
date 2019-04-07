@@ -90,10 +90,33 @@ Eksperyment będzie przeprowadzony przy użyciu bazy realnych haseł, które nas
 %----------------------------------------------------------------------------------------
 \section{Plan eksperymentu}
 \subsection{Źródło danych}
-Jako źródło danych wybrane zostały hasła dostępne na stronie \textit{Have I Been Pwned} \\ (\textit{https://haveibeenpwned.com/Passwords}). Baza zawiera 551 509 767 haseł, które pojawiły się w wyciekach informacji użytkowników, najczęściej z powodu niewystarczającego zabezpieczenia systemów. 
+Jako źródło danych wybrana została baza danych znaleziona w roku 2017 przez firmę z branży cyberbezpieczeństwa - \textit{4iQ}. Baza to kompilacja informacji z 252 wycieków; zawiera loginy i hasła do ponad 1.4 miliarda kont. Całkowity rozmiar danych to 41.1 GB. Osoba odpowiedzialna za stworzenie bazy danych jest nieznana; dane zostały odkryte przez \textit{4iQ} w \textit{dark web} i można je obecnie pobrać przy użyciu sieci \textit{torrent}.
 
-Hasła znajdują się w pojedynczym pliku tekstowym o wielkości 22.6 GB. Praca z tak wielkim plikiem jest problematyczna, więc zostanie on podzielony na mniejsze pliki, które mogą zostać łatwo wczytane do pamięci komputera.
+Dane muszą zostać sformatowane przed użyciem ich w eksperymencie — są one porozdzielane na wiele plików oraz zawierają loginy i adresy e-mail powiązane z kontami; te dodatkowe informacje są zbędne. Ze względu na ilość danych badany będzie podzbiór haseł.
+
+\subsection{Technologie}
+Do formatowania bazy haseł wykorzystany został \textit{Python}.
+
+Algorytmy oceniające odporność haseł na łamanie zostały zaimplementowane przy użyciu \textit{Scala}.
+
 \subsection{Metoda oceny}
+\subsubsection{BFM}
+Algorytm \textit{BFM} działa następująco:
+\begin{enumerate}
+	\item Na podstawie treningowego zbioru haseł określane są:
+%		\subitem Tablica mieszająca w której klucze to znaki a wartości to prawdopodobieństwo wystąpienia jako pierwszy znak w haśle
+		\subitem Prawdopodobieństwo wystąpienia jako pierwszy znak w haśle dla każdego znaku
+		\subitem Kolejność zgadywania znaków: 
+			\subsubitem Zakładając zbiór treningowy złożony ze znaków \textit{A, B, C}; Jeżeli znak \text{A} ma największe prawdopodobieństwo wystąpienia jako pierwszy, znak \textit{B} ma największe prawdopodobieństwo wystąpienia po \textit{A} a znak \textit{C} ma największe prawdopodobieństwo wystąpienia po \textit{B}, pierwszą próbą odgadnięcia hasła będzie \textit{ABC}.
+	\item Dla właściwego zbioru haseł wyznaczana jest szacowana liczba wymaganych prób odgadnięcia według następującego wzoru: $ (k-i)^{L-1} $
+		\subitem \textit{N - ilość możliwych znaków} 
+		\subitem \textit{L - długość hasła}
+		\subitem \textit{i - pozycja znaku w haśle}
+		\subitem \textit{k - k-ta próba odgadnięcia hasła}
+		\subitem \textit{Jeżeli pierwszy znak nie zostanie odgadnięty poprawnie to wiemy że algorytm podejmie $ N^{L-1} $ prób zanim spróbuje odgadnąć hasło z innym znakiem na pierwszej pozycji}
+		\subitem \textit{Zgodnie z powyższym, dla k-tej próby odgadnięcia pierwszego znaku wiemy że algorytm podejmie conajmniej $ (k-1)N^{L-1} $ prób odgadnięcia hasła}
+\end{enumerate}
+
 %----------------------------------------------------------------------------------------
 %	SECTION 3
 %----------------------------------------------------------------------------------------
@@ -103,20 +126,26 @@ Hasła znajdują się w pojedynczym pliku tekstowym o wielkości 22.6 GB. Praca 
 %----------------------------------------------------------------------------------------
 %	SECTION 4
 %----------------------------------------------------------------------------------------
-\newpage
+%\newpage
 \section{Wyniki}
 
 %----------------------------------------------------------------------------------------
 %	SECTION 5
 %----------------------------------------------------------------------------------------
-\newpage
+%\newpage
 \section{Analiza wyników}
 
 %----------------------------------------------------------------------------------------
 %	SECTION 6
 %----------------------------------------------------------------------------------------
-\newpage
+%\newpage
 \section{Podsumowanie}
 
 %----------------------------------------------------------------------------------------
+%\begin{thebibliography}{9}
+%\bibitem{breach}
+%https://medium.com/4iqdelvedeep/1-4-billion-clear-text-credentials-discovered-in-a-single-database-3131d0a1ae14
+%placeholder
+%\end{thebibliography}
+
 \end{document}
