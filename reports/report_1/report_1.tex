@@ -94,14 +94,18 @@
 	%----------------------------------------------------------------------------------------
 	\section{Plan eksperymentu}
 	\subsection{Źródło danych}
-	Jako źródło danych wybrana została baza danych znaleziona w roku 2017 przez firmę z branży cyberbezpieczeństwa - \textit{4iQ} \cite{breach}. Baza to kompilacja informacji z 252 wycieków; zawiera loginy i hasła do ponad 1.4 miliarda kont. Całkowity rozmiar danych to 41.1 GB. Osoba odpowiedzialna za stworzenie bazy danych jest nieznana; dane zostały odkryte przez \textit{4iQ} w \textit{dark web} i można je obecnie pobrać przy użyciu sieci \textit{torrent}.
+	Jako źródło danych wybrana została baza danych znaleziona w roku 2017 przez firmę z branży cyberbezpieczeństwa - \textit{4iQ} \cite{breach}. Baza jest kompilacją informacji z 252 wycieków; zawiera loginy i hasła do ponad 1.4 miliarda kont. Całkowity rozmiar danych to 41.1 GB. Osoba odpowiedzialna za stworzenie bazy danych jest nieznana; dane zostały odkryte przez \textit{4iQ} w \textit{dark web} i można je obecnie pobrać przy użyciu sieci \textit{torrent}.
 	
 	Dane muszą zostać sformatowane przed użyciem ich w eksperymencie — są one porozdzielane na wiele plików oraz zawierają loginy i adresy poczty elektronicznej powiązane z kontami; te dodatkowe informacje są zbędne. Ze względu na ilość danych badany będzie podzbiór haseł.
+	
+	\subsection{Planowany przebieg eksperymentu}
+	Algorytmy rozważane w niniejszym eksperymencie posiadają wysoką złożoność obliczeniową i czasową, przez co testowanie ich implementacji na dużych zbiorach haseł byłoby mocno ograniczone przez moc obliczeniową dzisiejszych komputerów i czas potrzebny na przeprowadzenie takich badań. Aby umożliwić przeprowadzenie eksperymentu na o wiele większej bazie haseł, wykorzystane zostaną metody pozwalające na wyliczenie liczby prób potrzebnych do odgadnięcia hasła w obu algorytmach, nazywane \textit{kalkulatorami} \cite{calc}. 
 	
 	\subsection{Technologie}
 	Do formatowania bazy haseł wykorzystany został \textit{Python}.
 	
 	Algorytmy oceniające skuteczność łamania haseł w poszczególnych algorytmach zostały zaimplementowane przy użyciu \textit{Scala}.
+
 	
 	\subsection{Metoda oceny}
 	\subsubsection{BFM}
@@ -114,7 +118,6 @@
 		\item Na podstawie powstałych zbiorów określona zostaje kolejność zgadywania kolejnych znaków w haśle	
 		%\item Dla właściwego zbioru haseł wyznaczana jest liczba wymaganych prób potrzebnych do jego odgadnięcia według następującego wzoru: $ (k-i)N^{L-i} $
 		
-		\newpage
 		\item Dla właściwego zbioru haseł wyznaczana jest liczba wymaganych prób potrzebnych do jego odgadnięcia:
 		\subitem \textit{N - długość zbioru znaków w alfabecie}
 		\subitem \textit{L - długość zgadywanego hasła}
