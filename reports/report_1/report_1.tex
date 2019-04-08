@@ -37,117 +37,133 @@
 \date{\today}
 
 \begin{document}
-\bibliographystyle{plainnat}
-%\lstset{style=cpp}
-\maketitle
-\begin{center}
-	\begin{tabular}{l r}
-		Prowadzący: &  Dr hab. inż. Grzegorz \textsc{Kołaczek}
-	\end{tabular}
-\end{center}
-
-\newpage
-\tableofcontents
-
-%----------------------------------------------------------------------------------------
-%	SECTION 0
-%----------------------------------------------------------------------------------------
-
-%\begin{multicols}{2}
-%	\begin{itemize}
-%		\item
-%	\end{itemize}
-%\end{multicols}
-
-%\newpage
-%\section{Title}}
-%\subsection{Title}
-%\par Text
-
-%\begin{itemize}
-%	\item\textit{Text} - Desc
-%\end{itemize}
-
-%\begin{enumerate}
-%	\item Desc
-%\end{enumerate}
-
-%\begin{center}
-%	\includegraphics[scale=0.6, center]{images\}
-%\end{center}
-
-%\begin{lstlisting}[basicstyle=\small]
-%	programming code
-%\end{lstlisting}
-
-%----------------------------------------------------------------------------------------
-%	SECTION 1
-%----------------------------------------------------------------------------------------
-\newpage
-\section{Cel eksperymentu}
-Hasła tekstowe to obecnie najpopularniejsza metoda uwierzytelniana używana do ograniczania dostępu do zasobów takich jak serwisy internetowe czy konta pocztowe przez osoby nieupoważnione. Zabezpieczenia tego typu są łatwe w użyciu jednakże proste do złamania — w ramach eksperymentu analizowane będzie łamanie haseł przy użyciu algorytmów \textit{BFM} oraz \textit{Weira}.
-
-Eksperyment będzie przeprowadzony przy użyciu bazy realnych haseł, które następnie będą badane pod kątem odporności na złamanie przez poszczególne algorytmy.
-
-%----------------------------------------------------------------------------------------
-%	SECTION 2
-%----------------------------------------------------------------------------------------
-\section{Plan eksperymentu}
-\subsection{Źródło danych}
-Jako źródło danych wybrana została baza danych znaleziona w roku 2017 przez firmę z branży cyberbezpieczeństwa - \textit{4iQ} \cite{breach}. Baza to kompilacja informacji z 252 wycieków; zawiera loginy i hasła do ponad 1.4 miliarda kont. Całkowity rozmiar danych to 41.1 GB. Osoba odpowiedzialna za stworzenie bazy danych jest nieznana; dane zostały odkryte przez \textit{4iQ} w \textit{dark web} i można je obecnie pobrać przy użyciu sieci \textit{torrent}.
-
-Dane muszą zostać sformatowane przed użyciem ich w eksperymencie — są one porozdzielane na wiele plików oraz zawierają loginy i adresy poczty elektronicznej powiązane z kontami; te dodatkowe informacje są zbędne. Ze względu na ilość danych badany będzie podzbiór haseł.
-
-\subsection{Technologie}
-Do formatowania bazy haseł wykorzystany został \textit{Python}.
-
-Algorytmy oceniające odporność haseł na łamanie zostały zaimplementowane przy użyciu \textit{Scala}.
-
-\subsection{Metoda oceny}
-\subsubsection{BFM}
-Algorytm oceny skuteczności \textit{BFM} działa następująco:
-\begin{enumerate}
-	\item Na podstawie treningowego zbioru haseł określane są:
-	% \subitem Tablica mieszająca, w której klucze to znaki a wartości to prawdopodobieństwo wystąpienia jako pierwszy znak w haśle
-		\subitem Prawdopodobieństwo wystąpienia jako pierwszy znak w haśle dla każdego znaku
-		\subitem Zbiór digramów definiujących kolejność zgadywania znaków:
+	\bibliographystyle{plainnat}
+	%\lstset{style=cpp}
+	\maketitle
+	\begin{center}
+		\begin{tabular}{l r}
+			Prowadzący: &  Dr hab. inż. Grzegorz \textsc{Kołaczek}
+		\end{tabular}
+	\end{center}
+	
+	\newpage
+	\tableofcontents
+	
+	%----------------------------------------------------------------------------------------
+	%	SECTION 0
+	%----------------------------------------------------------------------------------------
+	
+	%\begin{multicols}{2}
+	%	\begin{itemize}
+	%		\item
+	%	\end{itemize}
+	%\end{multicols}
+	
+	%\newpage
+	%\section{Title}}
+	%\subsection{Title}
+	%\par Text
+	
+	%\begin{itemize}
+	%	\item\textit{Text} - Desc
+	%\end{itemize}
+	
+	%\begin{enumerate}
+	%	\item Desc
+	%\end{enumerate}
+	
+	%\begin{center}
+	%	\includegraphics[scale=0.6, center]{images\}
+	%\end{center}
+	
+	%\begin{lstlisting}[basicstyle=\small]
+	%	programming code
+	%\end{lstlisting}
+	
+	%----------------------------------------------------------------------------------------
+	%	SECTION 1
+	%----------------------------------------------------------------------------------------
+	\newpage
+	\section{Cel eksperymentu}
+	Hasła tekstowe to obecnie najpopularniejsza metoda uwierzytelniana używana do ograniczania dostępu do zasobów takich jak serwisy internetowe czy konta pocztowe przez osoby nieupoważnione. Zabezpieczenia tego typu są łatwe w użyciu jednakże proste do złamania — w ramach eksperymentu analizowane będzie łamanie haseł przy użyciu algorytmów \textit{BFM} oraz \textit{Weira}.
+	
+	Eksperyment będzie przeprowadzony przy użyciu bazy realnych haseł, które następnie będą badane pod kątem odporności na złamanie przez poszczególne algorytmy.
+	
+	%----------------------------------------------------------------------------------------
+	%	SECTION 2
+	%----------------------------------------------------------------------------------------
+	\section{Plan eksperymentu}
+	\subsection{Źródło danych}
+	Jako źródło danych wybrana została baza danych znaleziona w roku 2017 przez firmę z branży cyberbezpieczeństwa - \textit{4iQ} \cite{breach}. Baza to kompilacja informacji z 252 wycieków; zawiera loginy i hasła do ponad 1.4 miliarda kont. Całkowity rozmiar danych to 41.1 GB. Osoba odpowiedzialna za stworzenie bazy danych jest nieznana; dane zostały odkryte przez \textit{4iQ} w \textit{dark web} i można je obecnie pobrać przy użyciu sieci \textit{torrent}.
+	
+	Dane muszą zostać sformatowane przed użyciem ich w eksperymencie — są one porozdzielane na wiele plików oraz zawierają loginy i adresy poczty elektronicznej powiązane z kontami; te dodatkowe informacje są zbędne. Ze względu na ilość danych badany będzie podzbiór haseł.
+	
+	\subsection{Technologie}
+	Do formatowania bazy haseł wykorzystany został \textit{Python}.
+	
+	Algorytmy oceniające skuteczność łamania haseł w poszczególnych algorytmach zostały zaimplementowane przy użyciu \textit{Scala}.
+	
+	\subsection{Metoda oceny}
+	\subsubsection{BFM}
+	Kalkulator oceny skuteczności algorytmu \textit{BFM} działa następująco:
+	\begin{enumerate}
+		\item Na podstawie treningowego zbioru haseł określane są:
+		\subitem Zbiór pojedynczych znaków alfabetu wraz z częstotliwością ich występowania jako pierwsza litera hasła 
+		\subitem Zbiór wszystkich możliwych digramów ułożonych ze znaków w alfabecie wraz z częstotliwością ich występowania, tworzony w następujący sposób:
 		\subsubitem Zakładając zbiór treningowy złożony ze znaków \textit{A, B, C}; Jeżeli znak \text{A} ma największe prawdopodobieństwo wystąpienia jako pierwszy, znak \textit{B} ma największe prawdopodobieństwo wystąpienia po \textit{A} a znak \textit{C} ma największe prawdopodobieństwo wystąpienia po \textit{B}, pierwszą próbą odgadnięcia hasła będzie \textit{ABC}.
-	\item Dla właściwego zbioru haseł wyznaczana jest szacowana liczba wymaganych prób odgadnięcia według następującego wzoru: $ (k-i)N^{L-1} $
-		\subitem \textit{N - ilość możliwych znaków}
-		\subitem \textit{L - długość hasła}
+		\item Na podstawie powstałych zbiorów określona zostaje kolejność zgadywania kolejnych znaków w haśle	
+		%\item Dla właściwego zbioru haseł wyznaczana jest liczba wymaganych prób potrzebnych do jego odgadnięcia według następującego wzoru: $ (k-i)N^{L-i} $
+		
+		\newpage
+		\item Dla właściwego zbioru haseł wyznaczana jest liczba wymaganych prób potrzebnych do jego odgadnięcia:
+		\subitem \textit{N - długość zbioru znaków w alfabecie}
+		\subitem \textit{L - długość zgadywanego hasła}
+		\subitem \textit{M - minimalna długość hasła}
+		\subitem \textit{CF - liczbę znaków sprawdzanych przed odgadnięciem właściwego pierwszego znaku hasła}
+		\subitem \textit{DF(i) - liczba digramów sprawdzanych przed odgadnięciem właściwego i-tego znaku hasła}
 		\subitem \textit{i - pozycja znaku w haśle}
 		\subitem \textit{k - k-ta próba odgadnięcia hasła}
+		\subitem \textit{X - liczba haseł krótszych niż zgadywane}
+		\subitem \textit{Y - liczba haseł z niepoprawnie odgadniętą pierwszą literą}
+		\subitem \textit{Z - liczba haseł z niepoprawnie zgadniętym i-tym znakiem}
+		\subitem \textbf{\textit{Q - liczba prób potrzebnych do odgadnięcia zadanego hasła}}
+		
+		\subitem $ X = \sum_{l = L}^{l = M} N^l $		
+		\subitem $ Y = CF * N^{L-1} $		
+		\subitem $ Z = \sum_{i = 2}^{i = L} DF(i) * N^{L - (i + 2)} $		
+		\subitem $ Q = X + Y + Z $
+		
 		\subitem \textit{Jeżeli pierwszy znak nie zostanie odgadnięty poprawnie to wiemy, że algorytm podejmie $ N^{L-1} $ prób, zanim spróbuje odgadnąć hasło z innym znakiem na pierwszej pozycji}
 		\subitem \textit{Zgodnie z powyższym, dla k-tej próby odgadnięcia pierwszego znaku wiemy, że algorytm podejmie co najmniej $ (k-1)N^{L-1} $ prób odgadnięcia hasła}
-		\subitem \textbf{\textit{Ostateczna ilość prób odgadnięć to suma prób dla każdego znaku}}
-\end{enumerate}
-
-%----------------------------------------------------------------------------------------
-%	SECTION 3
-%----------------------------------------------------------------------------------------
-\newpage
-\section{Przebieg eksperymentu}
-
-%----------------------------------------------------------------------------------------
-%	SECTION 4
-%----------------------------------------------------------------------------------------
-%\newpage
-\section{Wyniki}
-
-%----------------------------------------------------------------------------------------
-%	SECTION 5
-%----------------------------------------------------------------------------------------
-%\newpage
-\section{Analiza wyników}
-
-%----------------------------------------------------------------------------------------
-%	SECTION 6
-%----------------------------------------------------------------------------------------
-%\newpage
-\section{Podsumowanie}
-
-%----------------------------------------------------------------------------------------
-\newpage
-\bibliography{bibliography}
-
+		%\subitem \textbf{\textit{Ostateczna ilość prób odgadnięć to suma prób dla każdego znaku}}
+	\end{enumerate}
+	
+	%----------------------------------------------------------------------------------------
+	%	SECTION 3
+	%----------------------------------------------------------------------------------------
+	\newpage
+	\section{Przebieg eksperymentu}
+	
+	%----------------------------------------------------------------------------------------
+	%	SECTION 4
+	%----------------------------------------------------------------------------------------
+	%\newpage
+	\section{Wyniki}
+	
+	%----------------------------------------------------------------------------------------
+	%	SECTION 5
+	%----------------------------------------------------------------------------------------
+	%\newpage
+	\section{Analiza wyników}
+	
+	%----------------------------------------------------------------------------------------
+	%	SECTION 6
+	%----------------------------------------------------------------------------------------
+	%\newpage
+	\section{Podsumowanie}
+	
+	%----------------------------------------------------------------------------------------
+	\newpage
+	\bibliography{bibliography}
+	
 \end{document}
