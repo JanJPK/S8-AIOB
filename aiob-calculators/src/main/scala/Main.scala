@@ -17,8 +17,20 @@ object Main extends App {
     convertJavaStreamToScalaStream(Files.lines(file.toPath))
   }
 
-  val Alphabet = Set('a', 'b', 'c')
+  val Alphabet1 = (('a' to 'z') ++ ('0' to '9')).toSet
+  val Alphabet2 = (('a' to 'z') ++ ('0' to '9') ++ ('A' to 'Z')).toSet
 
-  val result = Calculators.BFM(Alphabet, 2, Stream("aaa", "aba"), Stream("abac"))
-  println(result.mkString("\n"))
+  val result1 = Calculators.BFM(
+    Alphabet1,
+    5,
+    readPasswordsFromFile(new File("trainingSet.txt")),
+    Stream("princes"))
+
+  val result2 = Calculators.BFM(
+    Alphabet2,
+    5,
+    readPasswordsFromFile(new File("trainingSet3.txt")),
+    readPasswordsFromFile(new File("trainingSet.txt")))
+
+  println(result2.mkString("\n"))
 }
