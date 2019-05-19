@@ -23,6 +23,11 @@
 \usepackage{color} % Colored text
 \usepackage[square,sort,comma,numbers]{natbib}
 
+\usepackage{amsmath}
+\usepackage[ruled,longend]{algorithm2e}
+\renewcommand*{\listalgorithmcfname}{Spis algorytmów}
+\renewcommand*{\algorithmcfname}{Algorytm}
+%\renewcommand*{\algorithmautorefname}{heuristic}
 %\renewcommand{\labelenumi}{\alph{enumi}.} % Numbers in enumerate changed to a, b, c, ...
 
 %\lstdefinestyle{sharpc}{language=[Sharp]C, frame=lr, rulecolor=\color{blue!80!black}}
@@ -140,6 +145,45 @@
 		\subitem \textit{Zgodnie z powyższym, dla k-tej próby odgadnięcia pierwszego znaku wiemy, że algorytm podejmie co najmniej $ (k-1)N^{L-1} $ prób odgadnięcia hasła}
 		%\subitem \textbf{\textit{Ostateczna ilość prób odgadnięć to suma prób dla każdego znaku}}
 	\end{enumerate}
+
+	\subsubsection{Weir}
+	Pojęcia używane w algorytmie Weir'a:
+	\begin{itemize}
+		\item struktura (\textit{structure}) - opis określający typ każdego znaku w haśle
+			\subitem \textit{L} - litera
+			\subitem \textit{D} - cyfra
+			\subitem \textit{S} - znak specjalny			
+		\item (\textit{terminal}) - instancja (hasło) spełniająca założenia struktury
+		\item grupa prawdopodobieństwa (\textit{probability group}) - grupa terminali o jednakowym prawdopodobieństwie wystąpienia w zbiorze treningowym
+	\end{itemize}
+	\textit{Przykład: struktura hasła ''password123!@\#'' to ''LLLLLLLLDDDSSS''} \\ \\
+	
+	
+	Proces tworzenia tablicy z której korzysta algorytm jest bardziej złożony niż w przypadku algorytmu BFM.
+	\begin{algorithm}
+	$ T \gets \text{nowa tablica}$ \\
+	\ForAll{$struktury s$}  
+	{
+		\ForAll{$grupy\_prawdopodobieństwa pg$}
+		{
+			\ForAll{$lcs \in pg$}
+			{
+				$c_{i} = $ liczba wystąpień $lcs$ \\
+				$p_{i} = $ prawdopodobieństwo wystąpienia $lcs$ w zbiorze treningowym
+			}
+			$probability=\prod p_{i}$ \\
+			$size=\prod c_{i}$ \\
+			$T.add: \quad pg,probability,size$
+		}		
+	}
+	$Sort(T) \text{ by } probability$
+	%add to each value in t the sum of prior size values
+	\caption{Pseudokod opisujący proces tworzenia tablicy używanej w kalkulatorze Weir'a}
+	\end{algorithm}
+	% todo: algorithm -> algorytm w nagłówku
+	% todo: opisać co to lcs
+	% todo: reszta algo
+	
 	
 	%----------------------------------------------------------------------------------------
 	%	SECTION 3
@@ -169,10 +213,11 @@
 	%Wielkość plików zawierających dane testowe została ustalona na 500 000 haseł.
 	
 	\subsubsection{Zbiory treningowe}
-	Zbiór treningowy to ważna część danych wejściowych, od których zależy efektywność algorytmów. Zbiory zostały utworzone z losowo wybranych haseł o identycznej kategorii co dane wejściowe. Dla danych wejściowych o rozmiarze $N$, ilość haseł w zestawie treningowym wynosi $ 0,1 * N $.
+	Zbiór treningowy to ważna część danych wejściowych, od których zależy efektywność algorytmów. Zbiory zostały utworzone z losowo wybranych haseł o identycznej kategorii co dane wejściowe. %Dla danych wejściowych o rozmiarze $N$, ilość haseł w zestawie treningowym wynosi $ 0,1 * N $.
 	
 	
-	\subsection{Weir (PCFG)}
+	Dane służące jako zbiór treningowy kalkulatora oceny skuteczności algorytmu Weir'a zostały dodatkowo uporządkowane przy użyciu skryptu. Hasła zostały rozdzielone do plików odpowiadających ich strukturom. Dodatkowo, utworzony został plik zliczający wystąpienia każdego \textit{lcs}.
+	% todo: jak kolaczek chce to opisac kod
 	
 	%----------------------------------------------------------------------------------------
 	%	SECTION 4
