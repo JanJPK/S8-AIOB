@@ -146,6 +146,33 @@
 	%----------------------------------------------------------------------------------------
 	\newpage
 	\section{Przebieg eksperymentu}
+	\subsection{Przygotowanie danych}
+	Dane znajdujące się w pobranej bazie są podzielone na 1 981 plików, w 54 folderach. Informacje w plikach są przechowywane w formacie \textit{nazwa\_użytkownika:hasło}. Rozmiar plików nie jest stały. Przed przystąpieniem do eksperymentu za pomocą skryptu napisanego w języku \textit{Python} dane zostały uporządkowane tak, by utworzyć łatwy do analizy zbiór haseł. Algorytm wykonuje następujące operacje dla każdego pliku wchodzącego w skład pobranej bazy:
+	\begin{enumerate}
+		\item Wczytuje pojedynczą linię z pliku
+		\item Usuwa część linii zawierającą hasło
+		\item Przechodzi do następnej linii jeżeli hasło zawiera znaki inne niż:
+			\subitem cyfry
+			\subitem litery z alfabetu łacińskiego
+			\subitem znaki specjalne	
+	\end{enumerate}	
+	Tak przygotowana linia jest następnie przydzielana do kategorii i zapisana do odpowiedniego pliku. W eksperymencie rozróżniamy trzy kategorie haseł:
+	\begin{enumerate}
+		\item \textit{raw} - każde hasło które nie zostało odrzucone po analizie znaków
+		\item \textit{regular8} - hasło o długości min. 8 znaków
+		\item \textit{comprehensive8} - hasło o długości min. 8 znaków oraz zawierające co najmniej 1 dużą literę, 1 cyfrę i 1 znak specjalny
+	\end{enumerate}
+	Wymogi kategorii \textit{regular8} oraz \textit{comprehensive8} bazują na popularnych wymogach dotyczących haseł stosowanych w różnych serwisach internetowych. 
+	
+	Zaledwie \textit{0,5\%} haseł wchodzących w skład bazy spełnia wymogi \textit{comprehensive8}.
+	
+	%Wielkość plików zawierających dane testowe została ustalona na 500 000 haseł.
+	
+	\subsubsection{Zbiory treningowe}
+	Zbiór treningowy to ważna część danych wejściowych, od których zależy efektywność algorytmów. Zbiory zostały utworzone z losowo wybranych haseł o identycznej kategorii co dane wejściowe. Dla danych wejściowych o rozmiarze $N$, ilość haseł w zestawie treningowym wynosi $ 0,1 * N $.
+	
+	
+	\subsection{Weir (PCFG)}
 	
 	%----------------------------------------------------------------------------------------
 	%	SECTION 4
