@@ -7,6 +7,8 @@
 \usepackage{graphicx} % Required for the inclusion of images
 %\usepackage{natbib} % Required to change bibliography style to APA
 \usepackage{amsmath} % Required for some math elements
+\usepackage{float}
+\graphicspath{ {../../results/} }
 \setlength\parindent{12pt} % Removes all indentation from paragraphs
 %\usepackage{times} % Uncomment to use the Times New Roman font
 \usepackage[export]{adjustbox}
@@ -37,7 +39,7 @@
 %	DOCUMENT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{Analiza i ocena bezpieczeństwa systemów usługowych i IoT \\ Ocena skuteczności różnych metod łamania haseł \\ \textsc{Raport 1}}
+\title{Analiza i ocena bezpieczeństwa systemów usługowych i IoT \\ Ocena skuteczności różnych metod łamania haseł \\ \textsc{Raport 2}}
 \author{Jan \textsc{Pajdak} \\ Wojciech \textsc{Słowiński} \\ Maria \textsc{Filemonowicz}}
 \date{\today}
 
@@ -104,7 +106,7 @@
 	Dane muszą zostać sformatowane przed użyciem ich w eksperymencie — są one porozdzielane na wiele plików oraz zawierają loginy i adresy poczty elektronicznej powiązane z kontami; te dodatkowe informacje są zbędne. Ze względu na ilość danych badany będzie podzbiór haseł.
 	
 	\subsection{Planowany przebieg eksperymentu}
-	Algorytmy rozważane w niniejszym eksperymencie posiadają wysoką złożoność obliczeniową i czasową, przez co testowanie ich implementacji na dużych zbiorach haseł byłoby mocno ograniczone przez moc obliczeniową dzisiejszych komputerów i czas potrzebny na przeprowadzenie takich badań. Aby umożliwić przeprowadzenie eksperymentu na o wiele większej bazie haseł, wykorzystane zostaną metody pozwalające na wyliczenie liczby prób potrzebnych do odgadnięcia hasła w obu algorytmach, nazywane \textit{kalkulatorami} \cite{calc}. 
+	Algorytmy rozważane w niniejszym eksperymencie posiadają wysoką złożoność obliczeniową i czasową, przez co testowanie ich implementacji na dużych zbiorach haseł byłoby bardzo ograniczone przez moc obliczeniową dzisiejszych komputerów i czas potrzebny na przeprowadzenie takich badań. Aby umożliwić przeprowadzenie eksperymentu na o wiele większej bazie haseł, wykorzystane zostaną metody pozwalające na wyliczenie liczby prób potrzebnych do odgadnięcia hasła w obu algorytmach, nazywane \textit{kalkulatorami} \cite{calc}, dzięki którym wyznaczyć można siłę hasła.
 	
 	\subsection{Technologie}
 	Do formatowania bazy haseł wykorzystany został \textit{Python}.
@@ -183,8 +185,11 @@
 	% todo: algorithm -> algorytm w nagłówku
 	% todo: opisać co to lcs
 	% todo: reszta algo
-	
-	
+	\subsubsection{Estymator siły haseł Monte Carlo}
+	W celu porównania ze sobą różnych algorytmów, służących do łamania haseł, skorzystano również z estymatora Monte Carlo \cite{montecarlo}, który szacuje liczbę prób potrzebnych do zgadnięcia danego hasła. Na podstawie ciągu treningowego wybierana jest próbka o zadanej długości n haseł na podstawie prawdopodobieństwa ich zgadnięcia w każdym z modeli ataków, wśród której estymator oszacowuje ile haseł z próbki zostanie złamane przed złamaniem podanego hasła, ustalając tym samym przybliżoną liczbę prób potrzebną na jego złamanie. Metoda ta nie jest dokładna, a wyniki są przybliżone i często zależą od różnych parametrów (takich jak wielkość próbki, wielkość ciągu treningowego), jednak pozwala na porównanie wielu modeli ataków oraz różnych polityk tworzenia haseł.
+
+	W implementacji Monte Carlo \cite{montecarloimplementation} wyróżnione zostały modele ataków bazujące na n-gramach, będące rozszerzeniem algorytmu BFM o dłuższe ciągi znaków, oraz model PCFG, który zaproponowany został przez Weira.
+
 	%----------------------------------------------------------------------------------------
 	%	SECTION 3
 	%----------------------------------------------------------------------------------------
@@ -212,9 +217,11 @@
 	
 	%Wielkość plików zawierających dane testowe została ustalona na 500 000 haseł.
 	
-	\subsubsection{Zbiory treningowe}
-	Zbiór treningowy to ważna część danych wejściowych, od których zależy efektywność algorytmów. Zbiory zostały utworzone z losowo wybranych haseł o identycznej kategorii co dane wejściowe. %Dla danych wejściowych o rozmiarze $N$, ilość haseł w zestawie treningowym wynosi $ 0,1 * N $.
-	
+	\subsubsection{Ciąg treningowy i ciąg walidacyjny}
+	Ciąg treningowy to ważna część danych wejściowych, od których zależy skuteczność algorytmów. Dla każdej kategorii haseł został utworzony zbiór składający się z losowo wybranych haseł z odpowiadającej kategorii. Podobnie zostały stworzone ciągi walidacyjne. %Dla danych wejściowych o rozmiarze $N$, ilość haseł w zestawie treningowym wynosi $ 0,1 * N $.
+
+	Ciąg treningowy dla każdej kategorii haseł składa się z 500 tysięcy haseł, natomiast ciąg walidacyjny z 50 tysięcy haseł.
+
 	
 	Dane służące jako zbiór treningowy kalkulatora oceny skuteczności algorytmu Weir'a zostały dodatkowo uporządkowane przy użyciu skryptu. Hasła zostały rozdzielone do plików odpowiadających ich strukturom. Dodatkowo, utworzony został plik zliczający wystąpienia każdego \textit{lcs}.
 	% todo: jak kolaczek chce to opisac kod
@@ -222,15 +229,88 @@
 	%----------------------------------------------------------------------------------------
 	%	SECTION 4
 	%----------------------------------------------------------------------------------------
-	%\newpage
+	\newpage
 	\section{Wyniki}
-	
+	\subsection{Porównanie wpływu polityki tworzenia haseł na ich siłę w kontekście różnych algorytmów}
+	\begin{figure}[H]
+		\centering
+		\includegraphics{raw}
+		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł nienależących do żadnej polityki}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics{regular8}
+		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł w polityce regular8}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics{comprehensive8}
+		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł w polityce comprehensive8}
+	\end{figure}
+
+
+	Rysunki 1, 2 i 3 przedstawiają ile faktycznych prób musi wykonać każdy z algorytmów, aby odgadnąć procentową część wszystkich haseł z ciągu walidacyjnego.
+
+	\subsection{Porównanie wpływu rodzaju algorytmu na skuteczność łamania haseł w każdej z polityk}
+	\begin{figure}[H]
+		\centering
+		\includegraphics{2grams}
+		\caption{Skuteczność łamania haseł dla każdej polityki w algorytmie bazującym na 2-gramach (standardowy BFM)}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics{3grams}
+		\caption{Skuteczność łamania haseł dla każdej polityki w algorytmie bazującym na 3-gramach}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics{4grams}
+		\caption{Skuteczność łamania haseł dla każdej polityki w algorytmie bazującym na 4-gramach}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics{PCFG}
+		\caption{Skuteczność łamania haseł dla każdej polityki w algorytmie PCFG (algorytmie Weira)}
+	\end{figure}
+
+	Rysunki 4, 5, 6 i 7 przedstawiają liczbę prób potrzebną do złamania procentowej części wszystkich haseł z ciągu walidacyjnego.
+
 	%----------------------------------------------------------------------------------------
 	%	SECTION 5
 	%----------------------------------------------------------------------------------------
-	%\newpage
+	\newpage
 	\section{Analiza wyników}
-	
+	\subsection{Analiza wpływu polityki tworzenia haseł i rodzaju używanego algorytmu na skuteczność łamania haseł}
+		Przeprowadzone badania potwierdzają zależność pomiędzy stopniem złożoności algorytmu a jego skutecznością
+		niezależnie od wybranej polityki tworzenia haseł. Algorytm PCFG, który przeprowadza najbardziej szczegółową
+		analizę haseł z ciągu treningowego, wyprzedza wszystkie algorytmy bazujące na n-gramach w liczbie prób, potrzebnych
+		do złamania hasła. Podczas porównywania ze sobą n-gramów, również obserwowany jest wpływ długości ciągów znaków
+		na skuteczność algorytmu - niezależnie od rodzaju łamanych haseł dłuższy ciąg znaków skutkował większą efektywnością.
+
+		W oparciu o rysunek 3 przy polityce comprehensive8 można zauważyć przewagę w skuteczności algorytmu
+		opierającego się na 4-gramach nad algorytmem PCFG w ponad \textit{50\%} badanych haseł z ciągu walidacyjnego.
+		Aby potwierdzić zależność pomiędzy tą konkretną polityką a skutecznością obu algorytmów, warto wykonać powtórne
+		testy na większym zbiorze treningowym.
+
+		Zarówno w przypadku algorytmów opierających się o 2-gramy, jak i 3-gramy, widoczna jest różnica wpływu polityki
+		tworzenia haseł na ich siłę (w kontekście ich łamania przez w. w. algorytmy). Hasła, które nie miały żadnych
+		zasad regulujących strukturę ich tworzenia, były bardziej podatne na złamanie niż w przypadku polityki regular8
+		czy comprehensive8. Wśród tych dwóch polityk z kolei w około \textit{90\%} przypadków silniejsze były hasła,
+		których struktura zawierała minimum jeden znak specjalny, jedną cyfrę i jedną wielką literę.
+
+		W przypadku algortmów opierających się na 4-gramach różnice w sile haseł w zależności od polityki są o wiele mniejsze
+		niż w przypadku 2-gramów czy 3-gramów. Wciąż można zaobserwować taką samą tendencję, jednak w szczególności
+		polityki regular8 i comprehensive8 zbliżają się do siebie swoją podatnością na złamanie.
+
+		W przypadku algorytmu PCFG różnice w sile haseł są nieco większe - widoczna jest duża przewaga haseł w polityce
+		comprehensive8 nad innymi politykami. Zacierają się jednak różnice w podatności na łamanie haseł z kategorii raw
+		i regular8.
+
 	%----------------------------------------------------------------------------------------
 	%	SECTION 6
 	%----------------------------------------------------------------------------------------
