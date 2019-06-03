@@ -12,6 +12,9 @@
 \setlength\parindent{12pt} % Removes all indentation from paragraphs
 %\usepackage{times} % Uncomment to use the Times New Roman font
 \usepackage[export]{adjustbox}
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{breaklinks=true}
 
 % Polish language
 \usepackage[utf8]{inputenc}
@@ -39,7 +42,7 @@
 %	DOCUMENT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{Analiza i ocena bezpieczeństwa systemów usługowych i IoT \\ Ocena skuteczności różnych metod łamania haseł \\ \textsc{Raport 2}}
+\title{Analiza i ocena bezpieczeństwa systemów usługowych i IoT \\ Ocena skuteczności różnych metod łamania haseł \\ \textsc{Raport końcowy}}
 \author{Jan \textsc{Pajdak} \\ Wojciech \textsc{Słowiński} \\ Maria \textsc{Filemonowicz}}
 \date{\today}
 
@@ -205,11 +208,14 @@
 			\subitem litery z alfabetu łacińskiego
 			\subitem znaki specjalne	
 	\end{enumerate}	
-	Tak przygotowana linia jest następnie przydzielana do kategorii i zapisana do odpowiedniego pliku. W eksperymencie rozróżniamy trzy kategorie haseł:
+	Tak przygotowana linia jest następnie przydzielana do kategorii i zapisana do odpowiedniego pliku. W eksperymencie rozróżniamy następujace kategorie haseł:
 	\begin{enumerate}
 		\item \textit{raw} - każde hasło które nie zostało odrzucone po analizie znaków
 		\item \textit{regular8} - hasło o długości min. 8 znaków
+		\item \textit{regular16} - hasło o długości min. 16 znaków
 		\item \textit{comprehensive8} - hasło o długości min. 8 znaków oraz zawierające co najmniej 1 dużą literę, 1 cyfrę i 1 znak specjalny
+		\item \textit{comprehensive16} - hasło o długości min. 16 znaków oraz zawierające co najmniej 1 dużą literę, 1 cyfrę i 1 znak specjalny
+		\item \textit{keepass16} - hasło o długości min. 16 znaków, które zostało losowo wygenerowane oraz zawierające co najmniej 1 dużą literę, 1 cyfrę i 1 znak specjalny
 	\end{enumerate}
 	Wymogi kategorii \textit{regular8} oraz \textit{comprehensive8} bazują na popularnych wymogach dotyczących haseł stosowanych w różnych serwisach internetowych. 
 	
@@ -217,11 +223,21 @@
 	
 	%Wielkość plików zawierających dane testowe została ustalona na 500 000 haseł.
 	
-	\subsubsection{Ciąg treningowy i ciąg walidacyjny}
-	Ciąg treningowy to ważna część danych wejściowych, od których zależy skuteczność algorytmów. Dla każdej kategorii haseł został utworzony zbiór składający się z losowo wybranych haseł z odpowiadającej kategorii. Podobnie zostały stworzone ciągi walidacyjne. %Dla danych wejściowych o rozmiarze $N$, ilość haseł w zestawie treningowym wynosi $ 0,1 * N $.
+	\subsection{Ciąg treningowy i ciąg walidacyjny}
+	Ciąg treningowy to ważna część danych wejściowych, od których zależy skuteczność algorytmów.
+	Dla każdej kategorii haseł został utworzony zbiór składający się z losowo wybranych haseł z odpowiadającej kategorii.
+	Podobnie zostały stworzone ciągi walidacyjne. %Dla danych wejściowych o rozmiarze $N$, ilość haseł w zestawie treningowym wynosi $ 0,1 * N $.
 
-	Ciąg treningowy dla każdej kategorii haseł składa się z 500 tysięcy haseł, natomiast ciąg walidacyjny z 50 tysięcy haseł.
-
+	Ciąg treningowy dla kategorii haseł \textit{raw}, \textit{comprehensive8}, \textit{comprehensive16} i \textit{regular8}
+	składa się z 500 tysięcy haseł, natomiast ciąg walidacyjny z 50 tysięcy haseł.
+	Dla polityki \textit{regular8} zostały stworzone dwa ciągi treningowe - jeden o wielkości 500 tysięcy haseł
+	i drugi o wielkości miliona haseł, aby sprawdzić wpływ wielkości ciągu treningowego na efektywność algorytmów.
+	W poniższych badaniach wyróżnione zostaną w związku z tym kategorie nazwane \textit{regular8 500k} oraz \textit{regular8 mil}.
+	W przypadku polityki \textit{keepass16} również stworzone zostały dwa ciągi treningowe, oba o wielkości 500 tysięcy haseł,
+	jednak aby sprawdzić jaki wpływ na efektywność algorytmów ma rodzaj haseł zawartych w ciągu treningowym, stworzonono
+	zbiór składający się
+	z haseł z polityki \textit{keepass16} oraz zbiór składający się z haseł z polityki \textit{regular16}, nazwyane w badaniach
+	kolejno \textit{keepass16 tsKeepass16} oraz \textit{keepass16 tsRegular16}.
 	
 	Dane służące jako zbiór treningowy kalkulatora oceny skuteczności algorytmu Weir'a zostały dodatkowo uporządkowane przy użyciu skryptu. Hasła zostały rozdzielone do plików odpowiadających ich strukturom. Dodatkowo, utworzony został plik zliczający wystąpienia każdego \textit{lcs}.
 	% todo: jak kolaczek chce to opisac kod
@@ -229,56 +245,117 @@
 	%----------------------------------------------------------------------------------------
 	%	SECTION 4
 	%----------------------------------------------------------------------------------------
-	\newpage
+
 	\section{Wyniki}
 	\subsection{Porównanie wpływu polityki tworzenia haseł na ich siłę w kontekście różnych algorytmów}
 	\begin{figure}[H]
 		\centering
-		\includegraphics{raw}
+		\includegraphics[width=15cm, keepaspectratio]{raw}
 		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł nienależących do żadnej polityki}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics{regular8}
-		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł w polityce regular8}
+		\includegraphics[width=15cm, keepaspectratio]{regular8_500k}
+		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł w polityce regular8 przy ciągu treningowym wielkośći 500 tysięcy haseł}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics{comprehensive8}
+		\includegraphics[width=15cm, keepaspectratio]{regular8_mil}
+		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł w polityce regular8 przy ciągu treningowym wielkośći miliona haseł}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=15cm, keepaspectratio]{regular16}
+		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł w polityce regular16}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=15cm, keepaspectratio]{comprehensive8}
 		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł w polityce comprehensive8}
 	\end{figure}
 
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=15cm, keepaspectratio]{comprehensive16}
+		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł w polityce comprehensive16}
+	\end{figure}
 
-	Rysunki 1, 2 i 3 przedstawiają ile faktycznych prób musi wykonać każdy z algorytmów, aby odgadnąć procentową część wszystkich haseł z ciągu walidacyjnego.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=15cm, keepaspectratio]{keepass16_tsKeepass16}
+		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł w polityce keepass16 przy ciągu treningowym złożonym z haseł w polityce keepass16}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=15cm, keepaspectratio]{keepass16_tsRegular16}
+		\caption{Wpływ rodzaju algorytmu na liczbę prób potrzebnych do złamania haseł w polityce keepass16 przy ciągu treningowym złożonym z haseł w polityce regular16}
+	\end{figure}
+
+
+	Rysunki 1 - 8 przedstawiają ile faktycznych prób musi wykonać każdy z algorytmów, aby odgadnąć procentową część wszystkich haseł z ciągu walidacyjnego.
 
 	\subsection{Porównanie wpływu rodzaju algorytmu na skuteczność łamania haseł w każdej z polityk}
 	\begin{figure}[H]
 		\centering
-		\includegraphics{2grams}
+		\includegraphics[width=15cm, keepaspectratio]{2-gram}
 		\caption{Skuteczność łamania haseł dla każdej polityki w algorytmie bazującym na 2-gramach (standardowy BFM)}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics{3grams}
+		\includegraphics[width=15cm, keepaspectratio]{3-gram}
 		\caption{Skuteczność łamania haseł dla każdej polityki w algorytmie bazującym na 3-gramach}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics{4grams}
+		\includegraphics[width=15cm, keepaspectratio]{4-gram}
 		\caption{Skuteczność łamania haseł dla każdej polityki w algorytmie bazującym na 4-gramach}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics{PCFG}
+		\includegraphics[width=15cm, keepaspectratio]{5-gram}
+		\caption{Skuteczność łamania haseł dla każdej polityki w algorytmie bazującym na 5-gramach}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=15cm, keepaspectratio]{PCFG}
 		\caption{Skuteczność łamania haseł dla każdej polityki w algorytmie PCFG (algorytmie Weira)}
 	\end{figure}
 
-	Rysunki 4, 5, 6 i 7 przedstawiają liczbę prób potrzebną do złamania procentowej części wszystkich haseł z ciągu walidacyjnego.
+	Rysunki 9-13 przedstawiają liczbę prób potrzebną do złamania procentowej części wszystkich haseł z ciągu walidacyjnego.
+
+	\subsection{Porównanie poszczególnych polityk}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=15cm, keepaspectratio]{comprehensive8_comprehensive16}
+		\caption{Porównanie polityki comprehensive8 i comprehensive16}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=15cm, keepaspectratio]{regular8_500k_regular8_mil}
+		\caption{Porównanie polityki regular8 na zbiorze treningowym wielkości 500 tysięcy haseł i wielkości miliona haseł}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=15cm, keepaspectratio]{regular8_500k_regular16}
+		\caption{Porównanie polityki regular8 i regular16}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=15cm, keepaspectratio]{keepass16_tsRegular16_keepass16_tsKeepass16}
+		\caption{Porównanie polityki keepass16 w przypadku zbioru treningowego zawierającego hasła z polityki regular16 i zbioru z hasłami z polity keepass16}
+	\end{figure}
 
 	%----------------------------------------------------------------------------------------
 	%	SECTION 5
@@ -288,35 +365,76 @@
 	\subsection{Analiza wpływu polityki tworzenia haseł i rodzaju używanego algorytmu na skuteczność łamania haseł}
 		Przeprowadzone badania potwierdzają zależność pomiędzy stopniem złożoności algorytmu a jego skutecznością
 		niezależnie od wybranej polityki tworzenia haseł. Algorytm PCFG, który przeprowadza najbardziej szczegółową
-		analizę haseł z ciągu treningowego, wyprzedza wszystkie algorytmy bazujące na n-gramach w liczbie prób, potrzebnych
+		analizę haseł z ciągu treningowego, wyprzedza w większości polityk wszystkie algorytmy bazujące na n-gramach w liczbie prób, potrzebnych
 		do złamania hasła. Podczas porównywania ze sobą n-gramów, również obserwowany jest wpływ długości ciągów znaków
 		na skuteczność algorytmu - niezależnie od rodzaju łamanych haseł dłuższy ciąg znaków skutkował większą efektywnością.
-
-		W oparciu o rysunek 3 przy polityce comprehensive8 można zauważyć przewagę w skuteczności algorytmu
-		opierającego się na 4-gramach nad algorytmem PCFG w ponad \textit{50\%} badanych haseł z ciągu walidacyjnego.
-		Aby potwierdzić zależność pomiędzy tą konkretną polityką a skutecznością obu algorytmów, warto wykonać powtórne
-		testy na większym zbiorze treningowym.
+		Bardzo zbliżoną skuteczność niezależnie od polityki haseł mają algorytmy PCFG i algorytm bazujący na 5-gramach.
+		W przypadku polityk \textit{comprehensive} i \textit{keepass} algorytm oparty na 5-gramach wyprzedza algorytm PCFG.
 
 		Zarówno w przypadku algorytmów opierających się o 2-gramy, jak i 3-gramy, widoczna jest różnica wpływu polityki
 		tworzenia haseł na ich siłę (w kontekście ich łamania przez w. w. algorytmy). Hasła, które nie miały żadnych
-		zasad regulujących strukturę ich tworzenia, były bardziej podatne na złamanie niż w przypadku polityki regular8
-		czy comprehensive8. Wśród tych dwóch polityk z kolei w około \textit{90\%} przypadków silniejsze były hasła,
-		których struktura zawierała minimum jeden znak specjalny, jedną cyfrę i jedną wielką literę.
+		zasad regulujących strukturę ich tworzenia, były bardziej podatne na złamanie niż w przypadku polityki \textit{regular8}
+		czy \textit{comprehensive8}. Wśród tych dwóch polityk z kolei w około \textit{90\%} przypadków silniejsze były hasła,
+		których struktura zawierała minimum jeden znak specjalny, jedną cyfrę i jedną wielką literę. Podobna tendencja widoczna
+		jest również w przypadku haseł dwa razy dłuższych - \textit{regular16} i \textit{comprehensive16}.
 
-		W przypadku algortmów opierających się na 4-gramach różnice w sile haseł w zależności od polityki są o wiele mniejsze
-		niż w przypadku 2-gramów czy 3-gramów. Wciąż można zaobserwować taką samą tendencję, jednak w szczególności
-		polityki regular8 i comprehensive8 zbliżają się do siebie swoją podatnością na złamanie.
+		W przypadku algorytmów opierających się na 2-gramach i 3-gramach siła haseł w zależności od regorystycznyści polityki
+		jest zachowana - najprościej jest złamać hasła bez żadnej polityki, a następnie coraz trudniej kolejno: \textit{regular8},
+		\textit{comprehensive8}, \textit{regular16}, \textit{comprehensive16} i najtrudniej \textit{keepass16}. Podobne
+		tendencje można zauważyć w przypadku algorytmów opierających się o 4-gramy, jednak hasła z polityki \textit{keepass16}
+		jest o wiele trudniej złamać - gdzie w przypadku algorytmu opierającego się o 5-gramy ich siła lekko spada.
+		Algorytm PCFG zachowuje podobne prawidłowości w sile haseł w zależności od polityki.
 
-		W przypadku algorytmu PCFG różnice w sile haseł są nieco większe - widoczna jest duża przewaga haseł w polityce
-		comprehensive8 nad innymi politykami. Zacierają się jednak różnice w podatności na łamanie haseł z kategorii raw
-		i regular8.
+	\subsection{Analiza wpływu wielkości zbioru treningowego na efektywność algorytmów}
+		Na rysunku 15 została przedstawiona efektywność algorytmów łamiących hasła z polityki \textit{regular8}, gdzie w jednym
+		badaniu algorytmy miały do dyspozycji zbiór treningowy o wielkości 500 tysięcy haseł, a w drugim - miliona haseł. Dzięki nim
+		można porównać wpływ wielkości zbioru treningowego na skuteczność algorytmów łamiących hasła. Z badań wynika, że wielkość zbioru
+		treningowego faktycznie wpływa na liczbą prób potrzebnych do złamania hasła - dwukrotnie większy zbiór treningowy skutkuje
+		dziesięciokrotnym zwiększeniem liczby prób potrzebnych do zgadnięcia hasła.
+
+	\subsection{Analiza wpływu długości haseł na efektywność algorytmów}
+		Aby porównać wpływ minimalnej długości hasła na ich siłę, przeprowadzone zostały badania porównujące ze sobą polityki
+		\textit{regular8} i \textit{regular16} oraz \textit{comprehensive8} i \textit{comprehensive16}.
+		W przypadku polityk \textit{regular8} i \textit{regular16} porównywane są wyniki przedstawione na wykresie 16,
+		natomiast w politykach \textit{comprehensive8} i \textit{comprehensive16} na wykresie 14.
+		Można dzięki nim zaobserwować, że efektywność algorytmów przy hasłach dwukrotnie dłuższych spada ponad stukrotnie -
+		drastycznie wzrasta liczba prób potrzebnych do złamania hasła niezależnie od wykorzystanego algorytmu.
+
+	\subsection{Analiza wpływu rodzaju haseł zawartych w ciągu treningowym na efektywność algorytmów}
+		Na podstawie rysunku 17 porównywana jest siła haseł w polityce \textit{keepass16} w przypadku uczenia algorytmów
+	na dwóch różnych zbiorach treningowych - jednym opartym o hasła z tej polityki i drugim opartym o hasła z polityki \textit{regular16}.
+	Zazwyczaj osoby, które mają na celu złamanie jakiegoś hasła, uwzględniają w zbiorze treningowym politykę tworzenia haseł w serwisie.
+	W regułach tworzenia haseł w serwisie wymagania mogą być sprecyzowane co do długości hasła czy liczby znaków specjalnych,
+	natomiast osoba łamiąca hasło najpewniej nie ma świadomości czy dane hasło jest słownikowe czy losowo generowane,
+	więc najprawdopodobniej jako zbiór treningowy użyje zbioru haseł zawierających wszystkie rodzaje haseł spełniające wymagania serwisu.
+
+	Dzięki przeprowadzonym badaniom można zauważyć, że niezależnie od wybranego algorytmu zbiór uczący zawierający hasła z polityki,
+	która odpowiada polityce łąmanego hasła, czyli \textit{keepass16 tsKeepass16}, oferuje lepszą skuteczność łamania haseł
+	niż zbiór treningowy składający się z haseł z innej polityki. Z punktu widzenia osoby łąmiącej hasła najlepsze wyniki może osiągnąć
+	znając jak najwięcej informacji o strukturze łamanego hasła - jego długości, zawartych w nim znaków czy jego znaczenia. Dzięki takim informacjom
+	może lepiej dobrać zbiór treningowy i osiągnąć większą skuteczność w łamaniu haseł. Z punktu widzenia osoby tworzącej hasło
+	lepiej jest używać haseł generowanych losowo, ponieważ - o ile osoba potencjalnie łąmiąca hasło, nie ma świadomości, że hasło jest
+	generowane losowo - takie hasła są wielokrotnie silniejsze w kontekście ich łamania.
+
 
 	%----------------------------------------------------------------------------------------
 	%	SECTION 6
 	%----------------------------------------------------------------------------------------
 	%\newpage
 	\section{Podsumowanie}
-	
+	Przeprowadzone badania potwierdziły słuszność najpopularniejszych polityk tworzenia haseł uznawanych za skuteczne. Hasła dłuższe i
+	zawierające znaki specjalne są trudniejsze do złamania, choć najbezpieczniejszą metodą tworzenia haseł są jest ich losowe generowanie.
+	Niezależnie od wykorzystanego algorytmu łamiącego hasła są one nieporównywalnie silniejsze, a większość osób łamiących hasła dysponuje
+	ciągiem treningowym w postaci zbioru zawierającego hasła tworzone ze słów. W analizowanej bazie haseł można jednak znaleźć ogromną
+	liczbę haseł, które są bardzo proste i przewidywalne, co wskazuje na niedbałość lub nieświadomość osób zabezpieczających swoje konta.
+
+	Efektywność badanych algorytmów do łamania haseł rośnie wraz ze stopniem ich złożoności. Czym więcej operacji analizujących ciąg treningowy
+	musi zostać wykonanych podczas pracy algorytmu, tym mniej prób potrzeba, aby hasło zostało złamane. Na skuteczność algorytmu ma duży wpływ
+	wielkość ciągu treningowego oraz odpowiednia kategoria haseł w nim zawarta - szybciej złamane zostaną hasła, które odpowiadają polityką
+	tym zawartym w ciągu treningowym. Osoba łamiąca hasła może zyskać największą przewagę znając jak najwięcej informacji o strukturze
+	łamanego hasła (jego długości, zawieranych znaków, losowości lub znaczenia), ponieważ dzięki temu może dobrze dopasować ciąg treningowy,
+	a tym samym uzyskać najlepsze rezultaty.
+
 	%----------------------------------------------------------------------------------------
 	\newpage
 	\bibliography{bibliography}
